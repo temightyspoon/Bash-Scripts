@@ -4,10 +4,10 @@
 apt update 
 
 #installs Basic LAMP stack
-apt install apache2 mariadb-server mariadb-client php libapache2-mod-php php-cli curl git unzip
+apt install apache2 mariadb-server mariadb-client php libapache2-mod-php php-cli curl git unzip -y
 
 #installs needed PHP addons
-apt install php-mcrypt php-curl php-mysql php-gd php-ldap php-zip php-mbstring php-xml php-bcmath php-cli
+apt install php-mcrypt php-curl php-mysql php-gd php-ldap php-zip php-mbstring php-xml php-bcmath php-cli -y
 
 #enable webserver on startup
 systemctl start mariadb.service
