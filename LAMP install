@@ -21,3 +21,6 @@ sudo chmod -R 0755 /var/www/html/
 
 #creates a PHP test page in webserver folder
 sudo echo "<?php phpinfo(); ?>" > /var/www/html/info.php
+
+#optional- Install phpmyadmin
+sudo apt install phpmyadmin php-mbstring php-gettext
