@@ -1,4 +1,3 @@
-    
 #!/bin/bash
 #script to install all the little thing on a new system
 
