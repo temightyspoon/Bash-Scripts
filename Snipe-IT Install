@@ -1,2 +1,10 @@
 #!/bin/bash
 #script to install Snipe-IT Asset Management 
+
+sudo apt update 
+
+#installs Basic LAMP stack
+sudo apt install apache2 mariadb-server mariadb-client php7.1 libapache2-mod-php7.1 php-cli curl git unzip
+
+#installs needed PHP addons
+sudo apt install libapache2-mod-php7.1 php7.1 php7.1-mcrypt php7.1-curl php7.1-mysql php7.1-gd php7.1-ldap php7.1-zip php7.1-mbstring php7.1-xml php7.1-bcmath curl git unzip
