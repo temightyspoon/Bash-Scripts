@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# If /root/.my.cnf exists then it won't ask for root password
+# If /root/.my.cnf exists then root password isnt needed
 if [ -f /root/.my.cnf ]; then
 	echo "Please enter the NAME of the new database! (example: database1)"
 	read dbname
@@ -24,7 +24,7 @@ if [ -f /root/.my.cnf ]; then
 	echo "Database Creation Complete"
 	exit
 	
-# If /root/.my.cnf doesn't exist then it'll ask for root password	
+# If /root/.my.cnf doesn't exist then it will ask for root password	
 else
 	echo "Please enter root user MySQL password!"
 	read rootpasswd
