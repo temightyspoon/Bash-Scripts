@@ -33,5 +33,5 @@ chown -R "$APP_USER":"$apache_group" "$APP_PATH"
 phpenmod mcrypt
 phpenmod mbstring
 a2enmod rewrite
-a2ensite $APP_NAME.conf
+#a2ensite $APP_NAME.conf
 
