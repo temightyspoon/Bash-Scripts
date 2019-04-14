@@ -29,6 +29,18 @@ chmod -R 755 "$APP_PATH/public/uploads"
 #grants permssions to snipeitapp user
 chown -R "$APP_USER":"$apache_group" "$APP_PATH"
 
+#DATABASE CREATION
+  echo "Please enter root user MySQL password!"
+  read rootpasswd
+mysql -uroot -p${rootpasswd} -e "CREATE DATABASE snipeitapp;"
+mysql -uroot -p${rootpasswd} -e "show databases;"
+	echo "Please enter the PASSWORD for the snipeit database user!"
+read userpass
+mysql -uroot -p${rootpasswd} -e "CREATE USER snipeit@localhost IDENTIFIED BY '${userpass}';"
+mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON snipeitapp.* TO '${username}'@'localhost';"
+mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
+  echo "Database Creation Complete"
+
 
 phpenmod mcrypt
 phpenmod mbstring
