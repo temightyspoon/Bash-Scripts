@@ -35,7 +35,7 @@ chown -R "$APP_USER":"$apache_group" "$APP_PATH"
 mysql -uroot -p${rootpasswd} -e "CREATE DATABASE snipeitapp;"
 mysql -uroot -p${rootpasswd} -e "show databases;"
 	echo "Please enter the PASSWORD for the snipeit database user!"
-read userpass
+	read userpass
 mysql -uroot -p${rootpasswd} -e "CREATE USER snipeit@localhost IDENTIFIED BY '${userpass}';"
 mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON snipeitapp.* TO '${username}'@'localhost';"
 mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
