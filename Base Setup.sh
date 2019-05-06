@@ -4,4 +4,4 @@
 sudo apt update -y
 sudo apt upgrade -y
 
-sudo apt install neofetch ssh htop chromium-browser vlc git net-tools curl -y
+sudo apt install neofetch ssh htop chromium-browser vlc git net-tools curl wget unzip -y
