@@ -5,8 +5,7 @@
 sudo apt update 
 
 #installs the stack
-sudo apt install nginx mariadb-server mariadb-client \
-php-fpm php-mysql php-cli php-curl php-gd wget git unzip
+sudo apt install nginx mariadb-server mariadb-client php php-fpm php-mysql php-cli php-curl php-gd wget git unzip
 
 #enables the webserver on startup
 sudo systemctl enable nginx
