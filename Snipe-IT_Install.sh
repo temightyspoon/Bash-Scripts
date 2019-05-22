@@ -36,9 +36,11 @@ mysql -uroot -p${rootpasswd} -e "CREATE DATABASE snipeitapp;"
 mysql -uroot -p${rootpasswd} -e "show databases;"
 	echo "Please enter the PASSWORD for the snipeit database user!"
 	read userpass
-mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON snipeitapp.* TO '$snipeit'@'localhost' IDENTIFIED BY '${userpass}';"
+mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON snipeitapp.* TO '$snipeit_user'@'localhost' IDENTIFIED BY '${userpass}';"
 mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
   echo "Database Creation Complete"
+  echo " Database Name: snipeitapp"
+  echo " Username: snipeit_user"
 
 
 phpenmod mcrypt
