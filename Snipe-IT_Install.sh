@@ -32,15 +32,15 @@ chown -R "$APP_USER":"$apache_group" "$APP_PATH"
 #DATABASE CREATION
   echo "Please enter root user MySQL password!"
   read rootpasswd
-mysql -uroot -p${rootpasswd} -e "CREATE DATABASE snipeitapp;"
+mysql -uroot -p${rootpasswd} -e "CREATE DATABASE snipeit_db;"
 mysql -uroot -p${rootpasswd} -e "show databases;"
-	echo "Please enter the PASSWORD for the snipeit database user!"
+	echo "Please enter a PASSWORD to be used for the snipeit database user!"
 	read userpass
-mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON snipeitapp.* TO '$snipeit_user'@'localhost' IDENTIFIED BY '${userpass}';"
+mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON snipeit_db.* TO '$snipeit_user'@'localhost' IDENTIFIED BY '${userpass}';"
 mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
   echo "Database Creation Complete"
-  echo " Database Name: snipeitapp"
-  echo " Username: snipeit_user"
+  echo " Database Name:	 snipeitapp"
+  echo " Username:	 snipeit_user"
 
 
 phpenmod mcrypt
