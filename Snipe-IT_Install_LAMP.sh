@@ -50,7 +50,7 @@ chown -R "$APP_USER":"$apache_group" "$APP_PATH"
 
 #setup .env file
 cd /var/www/snipe-it
-$ sudo mv .env.example .env
+$ sudo cp .env.example .env
 
 phpenmod mcrypt
 phpenmod mbstring
