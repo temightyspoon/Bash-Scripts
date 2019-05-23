@@ -49,7 +49,7 @@ chmod -R 755 "$APP_PATH/public/uploads"
 chown -R "$APP_USER":"$apache_group" "$APP_PATH"
 
 #setup .env file
-cd /var/www/snipe-it/snipe-it
+cd /var/www/snipe-it
 $ sudo mv .env.example .env
 
 phpenmod mcrypt
