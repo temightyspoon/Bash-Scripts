@@ -18,10 +18,10 @@ readonly APP_NAME="snipe-it"
 readonly APP_PATH="/var/www/$APP_NAME"
 
 #DATABASE VARIABLE INPUT
-	read -p "Please enter a Database name [snipe-it_db]: " DB_NAME
-  DB_NAME=${DB_NAME:-snipe-it_db}
-  read -p "Please enter a Database user [snipe-it_user]: " DB_USER
-  DB_USER=${DB_USER:-snipe-it_user}
+	read -p "Please enter a Database name [snipeit_db]: " DB_NAME
+  DB_NAME=${DB_NAME:-snipeit_db}
+  read -p "Please enter a Database user [snipeit_user]: " DB_USER
+  DB_USER=${DB_USER:-snipeit_user}
   read -p "Please enter a PASSWORD to be used for the snipeit database user!" DB_PASS
   read -p "Please enter root user MySQL password!" rootpasswd
 
