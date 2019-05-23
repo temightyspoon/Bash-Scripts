@@ -1,11 +1,9 @@
 #!/bin/bash
 #script to install all the little thing on a new system
 
-echo "please enter username for git"
-read $usename
+read -p "please enter username for git" $usename
 
-echo "please enter email for git"
-read $email_addr
+read -p "please enter email for git" $email_addr
 
 sudo add-apt-repository -y ppa:webupd8team/atom
 
