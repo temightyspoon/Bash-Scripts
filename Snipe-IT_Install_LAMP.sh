@@ -17,12 +17,12 @@ readonly APP_NAME="snipe-it"
 readonly APP_PATH="/var/www/$APP_NAME"
 
 #DATABASE CREATION
-  echo "Please enter root user MySQL password!"
-  read rootpasswd
+	read -p "Please enter root user MySQL password!" rootpasswd
+
 mysql -uroot -p${rootpasswd} -e "CREATE DATABASE snipeit_db;"
 mysql -uroot -p${rootpasswd} -e "show databases;"
-	echo "Please enter a PASSWORD to be used for the snipeit database user!"
-	read userpass
+	
+	read -p "Please enter a PASSWORD to be used for the snipeit database user!" userpass
 mysql -uroot -p${rootpasswd} -e "GRANT ALL PRIVILEGES ON snipeit_db.* TO '$snipeit_user'@'localhost' IDENTIFIED BY '${userpass}';"
 mysql -uroot -p${rootpasswd} -e "FLUSH PRIVILEGES;"
   echo "Database Creation Complete"
