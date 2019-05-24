@@ -9,7 +9,6 @@ log () {
   fi
 }
 
-PACKAGES="mariadb-server mariadb-client apache2 libapache2-mod-php php php-mcrypt php-curl php-mysql php-gd $
 install_packages () {
         for p in $PACKAGES; do
         if dpkg -s "$p" >/dev/null 2>&1; then
@@ -41,7 +40,7 @@ create_virtualhost () {
 #updates and upgrades installed apps
 log "apt update && apt upgrade -y" 
 
-PACKAGES="mariadb-server mariadb-client apache2 libapache2-mod-php php php-mcrypt php-curl php-mysql php-gd $
+PACKAGES="mariadb-server mariadb-client apache2 libapache2-mod-php php php-mcrypt php-curl php-mysql php-gd php-ldap php-zip php-mbstring php-xml php-bcmath curl git unzip"
 install_packages
 
 #enable webserver on startup
