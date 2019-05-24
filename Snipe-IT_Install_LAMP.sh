@@ -60,7 +60,7 @@ readonly APP_PATH="/var/www/$APP_NAME"
   read -p "Please enter a Database user [snipeit_user]: " DB_USER
   DB_USER=${DB_USER:-snipeit_user}
   read -p "Please enter a PASSWORD to be used for the snipeit database user!: " DB_PASS
-  read -p "Please enter root user MySQL password!" rootpasswd
+  read -s -p "Please enter root user MySQL password!: " rootpasswd
 
 #DATABASE VARIABLE INPUT
   mysql -uroot -p${rootpasswd} -e "CREATE DATABASE ${DB_NAME};"
@@ -108,6 +108,12 @@ read -p "Please enter the URL for site [localhost]: " WEB_ADDR
 #Create apache server block
 apachefile=/etc/apache2/sites-available/$APP_NAME.conf
 create_virtualhost
+
+echo "* Generating the application key."
+  log "php $APP_PATH/artisan key:generate --force"
+
+echo "* Artisan Migrate."
+  log "php $APP_PATH/artisan migrate --force"
 
 phpenmod mbstring
 a2enmod rewrite
