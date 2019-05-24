@@ -71,14 +71,14 @@ readonly APP_PATH="/var/www/$APP_NAME"
   echo " Database Name:	 ${DB_NAME}"
   echo " Username:    	 ${DB_USER}"
 
+
+#clones from repository
+  git clone https://github.com/snipe/snipe-it $APP_PATH
+  
 #Install composer - A dependancy manager for PHP
   cd /tmp
   curl -sS https://getcomposer.org/installer | php
   mv composer.phar /usr/local/bin/composer
-
-
-#clones from repository
-  git clone https://github.com/snipe/snipe-it $APP_PATH
 
 #adds ther snipeitapp user and sets permission levels
   adduser --quiet --disabled-password --gecos '""' "$APP_USER"
@@ -86,8 +86,7 @@ readonly APP_PATH="/var/www/$APP_NAME"
   chmod -R 755 "$APP_PATH/public/uploads"
 
 #grants permssions to snipeitapp user
-chown -R "$APP_USER":"$apache_group" "$APP_PATH"
-
+#chown -R "$APP_USER":"$apache_group" "$APP_PATH"
 #setup .env file
 cd /var/www/snipe-it
 $ sudo cp .env.example .env
@@ -108,6 +107,9 @@ read -p "Please enter the URL for site [localhost]: " WEB_ADDR
 #Create apache server block
 apachefile=/etc/apache2/sites-available/$APP_NAME.conf
 create_virtualhost
+
+echo "* Running composer."
+/usr/local/bin/composer install --no-dev --prefer-source --working-dir "$APP_PATH"
 
 echo "* Generating the application key."
   log "php $APP_PATH/artisan key:generate --force"
