@@ -1,19 +1,54 @@
 #!/bin/bash
 #script to install Snipe-IT Asset Management 
 
-apt update 
+log () {
+  if [ -n "$verbose" ]; then
+    eval "$@" |& tee -a /var/log/snipeit-install.log
+  else
+    eval "$@" |& tee -a /var/log/snipeit-install.log >/dev/null 2>&1
+  fi
+}
 
-#installs Basic LAMP stack
-apt install apache2 mariadb-server mariadb-client php libapache2-mod-php php-cli curl git unzip -y
+PACKAGES="mariadb-server mariadb-client apache2 libapache2-mod-php php php-mcrypt php-curl php-mysql php-gd $
+install_packages () {
+        for p in $PACKAGES; do
+        if dpkg -s "$p" >/dev/null 2>&1; then
+          echo "  * $p already installed"
+        else
+echo "  * Installing $p"
+log "apt-get install -y $p"
+ fi
+done;
+       }
 
-#installs needed PHP addons
-apt install php-mcrypt php-curl php-mysql php-gd php-ldap php-zip php-mbstring php-xml php-bcmath php-cli -y
+
+create_virtualhost () {
+  {
+    echo "<VirtualHost *:80>"
+    echo "  <Directory $APP_PATH/public>"
+    echo "      Allow From All"
+    echo "      AllowOverride All"
+    echo "      Options -Indexes"
+    echo "  </Directory>"
+    echo ""
+    echo "  DocumentRoot $APP_PATH/public"
+    echo "  ServerName $WEB_ADDR"
+    echo "</VirtualHost>"
+  } >> "$apachefile"
+}
+
+
+#updates and upgrades installed apps
+log "apt update && apt upgrade -y" 
+
+PACKAGES="mariadb-server mariadb-client apache2 libapache2-mod-php php php-mcrypt php-curl php-mysql php-gd $
+install_packages
 
 #enable webserver on startup
 systemctl start mariadb.service
 
 #secure mariadb install
-mysql_secure_installation
+/usr/bin/mysql_secure_installation
 
 #set variables for user, app name and path,
 readonly APP_USER="snipeit_user"
@@ -61,7 +96,7 @@ $ sudo cp .env.example .env
 #Set needed variable in .env file
 tzone=$(cat /etc/timezone)
 read -p "Please enter the URL for site [localhost]: " WEB_ADDR
-  WEB_ADDR=${WEB_ADDR:-localhost}
+ WEB_ADDR=${WEB_ADDR:-localhost}
 
   sed -i '1 i\#Created By Snipe-it Installer' "$APP_PATH/.env"
   sed -i "s|^\\(APP_TIMEZONE=\\).*|\\1$tzone|" "$APP_PATH/.env"
@@ -72,22 +107,12 @@ read -p "Please enter the URL for site [localhost]: " WEB_ADDR
   sed -i "s|^\\(APP_URL=\\).*|\\1http://$WEB_ADDR|" "$APP_PATH/.env"
 
 #Create apache server block
-create_virtualhost () {
-  {
-    echo "<VirtualHost *:80>"
-    echo "  <Directory $APP_PATH/public>"
-    echo "      Allow From All"
-    echo "      AllowOverride All"
-    echo "      Options -Indexes"
-    echo "  </Directory>"
-    echo ""
-    echo "  DocumentRoot $APP_PATH/public"
-    echo "  ServerName $fqdn"
-    echo "</VirtualHost>"
-  } >> "$apachefile"
-}
+apachefile=/etc/apache2/sites-available/$APP_NAME.conf
+create_virtualhost
 
-phpenmod mcrypt
 phpenmod mbstring
 a2enmod rewrite
-#a2ensite $APP_NAME.conf
+a2ensite $APP_NAME.conf
+
+echo "* Restarting Apache httpd."
+log "systemctl restart apache2"
