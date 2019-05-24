@@ -12,6 +12,9 @@ apt install php-mcrypt php-curl php-mysql php-gd php-ldap php-zip php-mbstring p
 #enable webserver on startup
 systemctl start mariadb.service
 
+#secure mariadb install
+mysql_secure_installation
+
 #set variables for user, app name and path,
 readonly APP_USER="snipeit_user"
 readonly APP_NAME="snipe-it"
@@ -22,7 +25,7 @@ readonly APP_PATH="/var/www/$APP_NAME"
   DB_NAME=${DB_NAME:-snipeit_db}
   read -p "Please enter a Database user [snipeit_user]: " DB_USER
   DB_USER=${DB_USER:-snipeit_user}
-  read -p "Please enter a PASSWORD to be used for the snipeit database user!" DB_PASS
+  read -p "Please enter a PASSWORD to be used for the snipeit database user!: " DB_PASS
   read -p "Please enter root user MySQL password!" rootpasswd
 
 #DATABASE VARIABLE INPUT
@@ -68,6 +71,21 @@ read -p "Please enter the URL for site [localhost]: " WEB_ADDR
   sed -i "s|^\\(DB_PASSWORD=\\).*|\\1$DB_PASS|" "$APP_PATH/.env"
   sed -i "s|^\\(APP_URL=\\).*|\\1http://$WEB_ADDR|" "$APP_PATH/.env"
 
+#Create apache server block
+create_virtualhost () {
+  {
+    echo "<VirtualHost *:80>"
+    echo "  <Directory $APP_PATH/public>"
+    echo "      Allow From All"
+    echo "      AllowOverride All"
+    echo "      Options -Indexes"
+    echo "  </Directory>"
+    echo ""
+    echo "  DocumentRoot $APP_PATH/public"
+    echo "  ServerName $fqdn"
+    echo "</VirtualHost>"
+  } >> "$apachefile"
+}
 
 phpenmod mcrypt
 phpenmod mbstring
