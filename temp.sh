@@ -19,4 +19,30 @@ USER_PASS='$nipe1t'
   sed -i "s|^\\(APP_URL=\\).*|\\1http://$WEB_ADDR|" "$APP_PATH/.env"
 
 
+##################################
+log () {
+  if [ -n "$verbose" ]; then
+    eval "$@" |& tee -a /var/log/snipeit-install.log
+  else
+    eval "$@" |& tee -a /var/log/snipeit-install.log >/dev/null 2>&1
+  fi
+}
+
+
+ PACKAGES="mariadb-server mariadb-client apache2 libapache2-mod-php php php-mcrypt php-curl php-mysql php-gd $
+
+install_packages () {
+        for p in $PACKAGES; do
+        if dpkg -s "$p" >/dev/null 2>&1; then
+          echo "  * $p already installed"
+        else
+echo "  * Installing $p"
+log "apt-get install -y $p"
+ fi
+done;
+       }
+
+install_packages
+
+
 
