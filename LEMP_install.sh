@@ -17,10 +17,11 @@ sudo systemctl start nginx
 sudo ufw allow 'Nginx HTTP'
 
 #access permssions to webserver folders
-sudo chmod -R 0755 /var/www/html/
+sudo chmod -R 755 /var/www/html/*
 
 #creates a PHP test page in webserver folder
 sudo echo "<?php phpinfo(); ?>" > /var/www/html/info.php
+sudo chmod -R 755 /var/www/html/*
 
 #optional- Install phpmyadmin
 sudo apt install phpmyadmin php-mbstring php-gettext
