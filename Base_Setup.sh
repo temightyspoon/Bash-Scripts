@@ -1,17 +1,16 @@
 #!/bin/bash
 #script to install all the little thing on a new system
 
-read -p "please enter username for git" $usename
+# Set Variables for script
+read -p "please enter username for git" $gitusename
+read -p "please enter email for git" $gitemail_addr
 
-read -p "please enter email for git" $email_addr
-
-sudo add-apt-repository -y ppa:webupd8team/atom
 
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt autoremove
 
-sudo apt install neofetch ssh htop chromium-browser vlc git net-tools curl wget unzip filezilla atom -y
+sudo apt install neofetch ssh htop chromium-browser vlc git net-tools curl wget unzip filezilla -y
 
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg;
   sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg;
@@ -19,7 +18,7 @@ curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microso
 	sudo apt-get update;
 	sudo apt-get install code;
 
-git config --global user.name $username
-git config --global user.email $email_addr
+git config --global user.name $gitusername
+git config --global user.email $gitemail_addr
 git config --sysyem core.editor nano
 
