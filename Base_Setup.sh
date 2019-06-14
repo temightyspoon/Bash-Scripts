@@ -54,10 +54,10 @@ git config --sysyem core.editor nano
 curl https://raw.githubusercontent.com/temightyspoon/liunx-bits/master/auth_keys > /tmp/auth_tmp
 
 # Configure sshd_config
-
+SSHD_Path="/etc/ssh/sshd_config"
   sed -i '1 i\#Created By Base_Setup Script' "$SSHD_Path"
-  sed -i "s|^\\(APP_TIMEZONE=\\).*|\\1$tzone|" "$SSHD_Path"
-  sed -i "s|^\\(DB_HOST=\\).*|\\1$localhost|" "$SSHD_Path"
+  sed -i "s|^\\(PermitRootLogon=\\).*|\\1no|" "$SSHD_Path"
+  sed -i "s|^\\(Port=\\).*|\\1$SshPort|" "$SSHD_Path"
   sed -i "s|^\\(DB_DATABASE=\\).*|\\1$DB_NAME|" "$SSHD_Path"
   sed -i "s|^\\(DB_USERNAME=\\).*|\\1$DB_USER|" "$SSHD_Path"
   sed -i "s|^\\(DB_PASSWORD=\\).*|\\1$DB_PASS|" "$SSHD_Path"
