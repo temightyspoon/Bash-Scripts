@@ -1,16 +1,43 @@
 #!/bin/bash
 #script to install all the little thing on a new system
 
-# Set Variables for script
-read -p "please enter username for git" $gitusename
-read -p "please enter email for git" $gitemail_addr
+#Setup Log Command
+log () {
+  if [ -n "$verbose" ]; then
+    eval "$@" |& tee -a /var/log/base_setup.log
+  else
+    eval "$@" |& tee -a /var/log/base_setup.log >/dev/null 2>&1
+  fi
+}
 
+#Setup Install Packages Command
+install_packages () {
+        for p in $PACKAGES; do
+        if dpkg -s "$p" >/dev/null 2>&1; then
+          echo "  * $p already installed"
+        else
+echo "  * Installing $p"
+log "apt-get install -y $p"
+ fi
+done;
+       }
+
+
+
+
+# Set Variables for script
+read -p "please enter username for git" $gitusername
+read -p "please enter email for git" $gitemail_addr
+read -p " What port do you want to use for ssh?" $SshPort
 
 sudo apt update -y
 sudo apt upgrade -y
-sudo apt autoremove
+sudo apt autoremove -y
 
-sudo apt install neofetch ssh htop chromium-browser vlc git net-tools curl wget unzip filezilla -y
+# Install Packages
+PACKAGES="neofetch ssh htop chromium-browser vlc git net-tools curl wget unzip filezilla"
+install_packages
+
 
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg;
   sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg;
@@ -18,7 +45,20 @@ curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microso
 	sudo apt-get update;
 	sudo apt-get install code;
 
+# Configure git
 git config --global user.name $gitusername
 git config --global user.email $gitemail_addr
 git config --sysyem core.editor nano
 
+# Pull down Auth Keys
+curl https://raw.githubusercontent.com/temightyspoon/liunx-bits/master/auth_keys > /tmp/auth_tmp
+
+# Configure sshd_config
+
+  sed -i '1 i\#Created By Base_Setup Script' "$SSHD_Path"
+  sed -i "s|^\\(APP_TIMEZONE=\\).*|\\1$tzone|" "$SSHD_Path"
+  sed -i "s|^\\(DB_HOST=\\).*|\\1$localhost|" "$SSHD_Path"
+  sed -i "s|^\\(DB_DATABASE=\\).*|\\1$DB_NAME|" "$SSHD_Path"
+  sed -i "s|^\\(DB_USERNAME=\\).*|\\1$DB_USER|" "$SSHD_Path"
+  sed -i "s|^\\(DB_PASSWORD=\\).*|\\1$DB_PASS|" "$SSHD_Path"
+  sed -i "s|^\\(APP_URL=\\).*|\\1http://$WEB_ADDR|" "$SSHD_Path"
